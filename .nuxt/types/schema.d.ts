@@ -82,6 +82,8 @@ declare module 'nuxt/schema' {
    },
   }
   interface PublicRuntimeConfig {
+   BACKEND_URL: string,
+
    nuxtHighcharts: {
       pluginOptions: any,
 

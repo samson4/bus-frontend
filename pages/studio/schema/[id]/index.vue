@@ -258,7 +258,7 @@
                 </div>
               </div>
               <div
-                v-if="isDataLoading && !table"
+                v-if="isDataLoading"
                 class="flex justify-center items-center py-12"
               >
                 <RefreshCw class="w-8 h-8 text-gray-400 animate-spin" />
@@ -338,7 +338,7 @@
                   </tbody>
                 </table>
                 <div>
-                  <div class="flex items-center gap-2">
+                  <!-- <div class="flex items-center gap-2">
                     <button
                       class="border rounded p-1"
                       @click="() => table.setPageIndex(0)"
@@ -376,7 +376,7 @@
                         {{ table.getPageCount() }}
                       </strong>
                     </span>
-                    <!-- <span class="flex items-center gap-1">
+                     <span class="flex items-center gap-1">
                       | Go to page:
                       <input
                         type="number"
@@ -384,9 +384,10 @@
                         @change="handleGoToPage"
                         class="border p-1 rounded w-16"
                       />
-                    </span> -->
+                    </span> 
                     <select
-                      :value="table.getState().pagination.pageSize"
+                      :value="pageSizes[0]"
+                      v-model="pagesize"
                       @change="handlePageSizeChange"
                     >
                       <option
@@ -397,7 +398,98 @@
                         Show {{ pageSize }}
                       </option>
                     </select>
-                  </div>
+                  </div> -->
+                  <!-- Pagination -->
+              <!-- Pagination -->
+              <div
+               
+               class="px-6 py-4 border-t border-gray-200 bg-gray-50"
+             >
+               <div
+                 class="flex flex-col sm:flex-row items-center justify-between gap-4"
+               >
+                 <div class="text-sm text-gray-700">
+                   Page
+                   <span class="font-medium">{{ dataPage }}</span>
+                   of
+                   <span class="font-medium">{{ Math.ceil(totalData/dataLimit) }}</span>
+                   
+                 </div>
+
+                 <div class="flex items-center space-x-1">
+                   <!-- First Page -->
+                   <button
+                     @click="dataPage = 1"
+                     :disabled="dataPage === 1"
+                     class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                     aria-label="Go to first page"
+                   >
+                     <ChevronsLeft class="w-4 h-4" />
+                   </button>
+
+                   <!-- Previous Page -->
+                   <button
+                     @click="dataPage--"
+                     :disabled="dataPage === 1"
+                     class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                     aria-label="Go to previous page"
+                   >
+                     <ChevronLeft class="w-4 h-4" />
+                   </button>
+
+                   <!-- Page Numbers -->
+                   <div class="hidden sm:flex items-center space-x-1">
+                     <template
+                       v-for="pageNumber in visiblePageNumbers"
+                       :key="pageNumber"
+                     >
+                       <button
+                         v-if="pageNumber !== '...'"
+                         @click="goToPage(pageNumber)"
+                         :class="[
+                           'px-3 py-2 rounded-md text-sm font-medium',
+                           currentPage === pageNumber
+                             ? 'bg-blue-600 text-white border border-blue-600'
+                             : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
+                         ]"
+                       >
+                         {{ pageNumber }}
+                       </button>
+                       <span v-else class="px-2 py-2 text-gray-500">
+                         {{ pageNumber }}
+                       </span>
+                     </template>
+                   </div>
+
+                   <!-- Current Page Indicator (Mobile) -->
+                   <span
+                     class="sm:hidden px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md"
+                   >
+                     {{ currentPage }} / {{ totalPages }}
+                   </span>
+
+                   <!-- Next Page -->
+                   <button
+                     @click="dataPage++"
+                     :disabled="dataPage === Math.ceil(totalData/dataLimit)"
+                     class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                     aria-label="Go to next page"
+                   >
+                     <ChevronRight class="w-4 h-4" />
+                   </button>
+
+                   <!-- Last Page -->
+                   <button
+                     @click="dataPage = Math.ceil(totalData/dataLimit)"
+                     :disabled="dataPage === Math.ceil(totalData/dataLimit)"
+                     class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                     aria-label="Go to last page"
+                   >
+                     <ChevronsRight class="w-4 h-4" />
+                   </button>
+                 </div>
+               </div>
+             </div>
                 </div>
               </div>
 
@@ -415,100 +507,7 @@
                 </p>
               </div>
 
-              <!-- Pagination -->
-              <!-- Pagination -->
-              <div
-                v-if="tableDataValue && tableDataValue.length > itemsPerPage"
-                class="px-6 py-4 border-t border-gray-200 bg-gray-50"
-              >
-                <div
-                  class="flex flex-col sm:flex-row items-center justify-between gap-4"
-                >
-                  <div class="text-sm text-gray-700">
-                    Showing
-                    <span class="font-medium">{{ startIndex + 1 }}</span> to
-                    <span class="font-medium">{{
-                      Math.min(endIndex, tableDataValue.length)
-                    }}</span>
-                    of
-                    <span class="font-medium">{{ tableDataValue.length }}</span>
-                    results
-                  </div>
-
-                  <div class="flex items-center space-x-1">
-                    <!-- First Page -->
-                    <button
-                      @click="goToPage(1)"
-                      :disabled="currentPage === 1"
-                      class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label="Go to first page"
-                    >
-                      <ChevronsLeft class="w-4 h-4" />
-                    </button>
-
-                    <!-- Previous Page -->
-                    <button
-                      @click="previousPage"
-                      :disabled="currentPage === 1"
-                      class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label="Go to previous page"
-                    >
-                      <ChevronLeft class="w-4 h-4" />
-                    </button>
-
-                    <!-- Page Numbers -->
-                    <div class="hidden sm:flex items-center space-x-1">
-                      <template
-                        v-for="pageNumber in visiblePageNumbers"
-                        :key="pageNumber"
-                      >
-                        <button
-                          v-if="pageNumber !== '...'"
-                          @click="goToPage(pageNumber)"
-                          :class="[
-                            'px-3 py-2 rounded-md text-sm font-medium',
-                            currentPage === pageNumber
-                              ? 'bg-blue-600 text-white border border-blue-600'
-                              : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
-                          ]"
-                        >
-                          {{ pageNumber }}
-                        </button>
-                        <span v-else class="px-2 py-2 text-gray-500">
-                          {{ pageNumber }}
-                        </span>
-                      </template>
-                    </div>
-
-                    <!-- Current Page Indicator (Mobile) -->
-                    <span
-                      class="sm:hidden px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md"
-                    >
-                      {{ currentPage }} / {{ totalPages }}
-                    </span>
-
-                    <!-- Next Page -->
-                    <button
-                      @click="nextPage"
-                      :disabled="currentPage === totalPages"
-                      class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label="Go to next page"
-                    >
-                      <ChevronRight class="w-4 h-4" />
-                    </button>
-
-                    <!-- Last Page -->
-                    <button
-                      @click="goToPage(totalPages)"
-                      :disabled="currentPage === totalPages"
-                      class="p-2 rounded-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                      aria-label="Go to last page"
-                    >
-                      <ChevronsRight class="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
+              
             </div>
 
             <!-- Stats Cards -->
@@ -579,6 +578,9 @@ import {
   Search,
   RefreshCw,
   ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronLeft,
   Plus,
   Settings,
   FileText,
@@ -611,9 +613,12 @@ const isDataLoading = ref(false);
 const searchQuery = ref("");
 const selectedTable = ref(null);
 const route = useRoute();
+const router = useRouter();
 const columns = ref([]);
-
-const pageSizes = [10, 20, 30, 40, 50, 100];
+const pagesize = ref(100);
+const pageSizes = [100, 200, 500];
+const totalData = ref(0);
+const dataPage = ref(1);
 const totalTables = ref(0);
 const tablesPage = ref(1);
 const dataItemsPerPage = ref(100);
@@ -632,7 +637,7 @@ const table = computed(() => {
     data: tableDataValue.value,
     columns: columns.value,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 });
 
@@ -647,6 +652,33 @@ watch(tablesPage, (newPage) => {
       offset.value
     );
     fetchTables(offset.value);
+  }
+});
+
+watch(pagesize, (newPageSize) => {
+
+  if (newPageSize > 0) {
+    tablesLimit.value = newPageSize;
+    offset.value = (tablesPage.value - 1) * tablesLimit.value;
+    console.log(
+      "Fetching tables with new page size:",
+      newPageSize,
+      offset.value
+    );
+    fetchTableData(offset.value);
+  }
+});
+watch(dataPage, (newPage) => {
+  console.log("Page size changed:", newPage);
+  if (newPage > 0) {
+    dataOffset.value = (newPage - 1) * dataLimit.value;
+    console.log(
+      "Fetching table data with offset:",
+      newPage,
+      dataLimit.value,
+      dataOffset.value
+    );
+    fetchTableData(selectedTable.value);
   }
 });
 const filteredTables = computed(() => {
@@ -713,23 +745,30 @@ const selectTable = async (tableName) => {
       header: col.column_name,
       cell: ({ getValue }) => getValue() || "",
     }));
-    const dataResponse = await axios.get(
-      `/data/?schema=${route.params.id}&table=${tableName}&limit=${dataLimit.value}&offset=${dataOffset.value}`
-    );
-
-    if (dataResponse.data.length === 0) {
-      tableDataValue.value = [];
-      isDataLoading.value = false;
-      return;
-    }
-    tableDataValue.value = dataResponse.data;
-    isDataLoading.value = false;
+    fetchTableData(tableName);
   } catch (error) {
     console.error("Error selecting table:", error);
     isDataLoading.value = false;
   }
 };
 
+const fetchTableData = async (tableName) => {
+  isDataLoading.value = true;
+  const dataResponse = await axios.get(
+    `/data/?schema=${route.params.id}&table=${tableName}&limit=${dataLimit.value}&skip=${dataOffset.value}`
+  );
+
+  if (dataResponse.data.length === 0) {
+    tableDataValue.value = [];
+    isDataLoading.value = false;
+    return;
+  }
+  totalData.value = dataResponse.total;
+  dataPage.value = dataResponse.page
+  dataLimit.value = dataResponse.limit;
+  tableDataValue.value = dataResponse.data;
+  isDataLoading.value = false;
+};
 // Refresh tables
 const refreshTables = () => {
   fetchTables();

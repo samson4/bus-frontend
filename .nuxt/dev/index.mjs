@@ -645,6 +645,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
+    "BACKEND_URL": "http://localhost:8000",
     "nuxtHighcharts": {
       "pluginOptions": {},
       "hcMods": [

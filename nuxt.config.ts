@@ -30,7 +30,12 @@ export default defineNuxtConfig({
   ],
   colorMode: {
     classSuffix: ''
-  }
+  },
+  runtimeConfig: {
+    public: {
+    BACKEND_URL: process.env.NUXT_BACKEND_URL,
+    }
+  },
 
 })
 
