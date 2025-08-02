@@ -23,7 +23,8 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/nuxt-highcharts/lib/plugin.js")> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/dev-server-logs.js")> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used.js")> &
-  InjectionType<typeof import("../../plugins/axios.js")>
+  InjectionType<typeof import("../../plugins/axios.js")> &
+  InjectionType<typeof import("../../plugins/vue-final-modal.js")>
 
 declare module '#app' {
   interface NuxtApp extends NuxtAppInjections { }

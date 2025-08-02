@@ -31,6 +31,7 @@
               Refresh
             </button>
             <button
+              @click="open"
               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               <Plus class="w-4 h-4 mr-2" />
@@ -107,7 +108,7 @@
           v-for="project in filteredProjects"
           :key="project.id"
           class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 cursor-pointer group"
-          @click="openProject(project)"
+         
         >
           <div class="p-6">
             <!-- Project Header -->
@@ -217,7 +218,7 @@
                   </span>
                 </div>
                 <button
-                  @click="$router.push('/studio')"
+                  @click="$router.push(`/project/${project.id}/studio`)"
                   class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
                 >
                   Open Project
@@ -247,6 +248,7 @@
           }}
         </p>
         <button
+        @click="open"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
         >
           <Plus class="w-4 h-4 mr-2" />
@@ -255,10 +257,18 @@
       </div>
     </div>
   </div>
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <ModalsContainer class="z-modal" />
+      <!-- Other content -->
+    </div>
+  
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import NewProject from "@/pages/projects/new/index.vue";
+import { ModalsContainer, useModal } from "vue-final-modal";
 import axios from "axios";
 import {
   FolderOpen,
@@ -352,6 +362,23 @@ const refreshProjects = () => {
   fetchProjects();
 };
 
+
+const { open, close } = useModal({
+  component: NewProject,
+  attrs: {
+    title: "Create Project",
+    onConfirm() {
+      console.log("Modal confirmed");
+      close();
+      fetchProjects(); // Refresh projects after creation
+    },
+    onClose() {
+      close();
+    }
+    }
+  },
+); 
+
 const toggleSortOrder = () => {
   sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
 };
@@ -364,6 +391,8 @@ const openProject = (project) => {
   // Navigate to project detail page
   // You can use your router here
   console.log("Opening project:", project.project.project_name);
+  router.push(`/project/${project.project.id}/studio`);
+  
 };
 
 const formatDate = (dateString) => {

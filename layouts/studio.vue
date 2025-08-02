@@ -5,7 +5,9 @@
   </div>
     <div class="flex w-full">
       <SideBar :items="sidebarNavigation" />
-      <main class="overflow-y-auto w-full h-full"><slot /></main>
+      <main class="overflow-y-auto w-full h-full"><slot />
+        <ModalsContainer />
+      </main>
     </div>
   </div>
 </template>
@@ -17,6 +19,7 @@ import SideBar from "@/components/SideBar.vue";
 import AppNavbar from "@/components/skeleton/NavBar.vue"; // Import your Navbar component
 import { SidebarProvider } from "@/components/ui/sidebar"; // SidebarTrigger might be used within AppNavbar or AppSidebar
 import { useColorMode } from "@vueuse/core";
+import { ModalsContainer } from "vue-final-modal";
 // ... (rest of your script setup remains the same)
 
 const colorMode = useColorMode();

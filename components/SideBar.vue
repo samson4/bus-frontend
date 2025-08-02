@@ -185,8 +185,8 @@ const toggleExpanded = (itemName) => {
   }
 };
 const isActiveTable = (tableName) => {
-  if (route.params.id) {
-    return route.params.id === tableName;
+  if (route.params.schema_id) {
+    return route.params.schema_id === tableName;
   }
 };
 const navigationItems = ref([]);
@@ -203,7 +203,7 @@ onMounted(async () => {
     navigationItems.value = response.data.map((schema) => ({
       id: schema.id,
       title: schema.schema_name,
-      url: `/studio/schema/${schema.schema_name}`,
+      url: `/project/${route.params.id}/studio/schema/${schema.schema_name}`,
       icon: Database,
     }));
   });
