@@ -49,10 +49,10 @@
               <!--Only Relational Database is supported-->
               <option value="postgresql">PostgreSQL</option>
               <option value="mysql">MySQL</option>
-              <option value="sqlite">SQLite</option>
+              <!-- <option value="sqlite">SQLite</option>
               <option value="MariaDB">MariaDB</option>
               <option value="MS SQL Server">MS SQL Server</option>
-              <option value="Oracle">Oracle</option>
+              <option value="Oracle">Oracle</option> -->
             </select>
           </div>
 
@@ -66,10 +66,10 @@
             </label>
             <input
               required
-              id="dbConnectionUrl"
-              v-model="dbConnectionUrl"
+              id="connectionUrl"
+              v-model="connectionUrl"
               type="text"
-              placeholder="Enter database connection URL"
+              :placeholder="dbConnectionUrl"
               class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
           </div>
@@ -123,14 +123,16 @@ interface ProjectResponse {
 const projectName = ref(null);
 // const dbConnectionUrl = ref(null);
 const dbType = ref("postgresql"); // Default to MySQL
+const connectionUrl = ref("");
 const router = useRouter();
 
 const createProject = async () => {
   try {
-    console.log("Creating project:", projectName.value, dbConnectionUrl.value);
+    console.log("Creating project:", projectName.value, connectionUrl.value);
     const response: ProjectResponse = await axios.post("/project/new", {
       project_name: projectName.value,
-      db_connection_string: dbConnectionUrl.value,
+      db_connection_string: connectionUrl.value,
+      database_dialect: dbType.value,
     });
     console.log("Project created successfully:", response);
     if (response && response.id) {

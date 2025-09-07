@@ -45,7 +45,7 @@
                 <div
                   :class="[
                     'flex items-center justify-between px-3 py-2 rounded-lg transition-colors cursor-pointer',
-                    isActiveTable(item.title)
+                    isActiveTable(item.id)
                       ? 'bg-blue-50 text-blue-700'
                       : 'text-gray-700 hover:bg-gray-100',
                   ]"
@@ -198,12 +198,13 @@ const projects = [
 ];
 
 onMounted(async () => {
-  await axios.get("/schemas").then((response) => {
+  console.log("Fetching schemas for project:", route.params.id);
+  await axios.get(`/schemas/`).then((response) => {
     console.log(response.data);
     navigationItems.value = response.data.map((schema) => ({
       id: schema.id,
       title: schema.schema_name,
-      url: `/project/${route.params.id}/studio/schema/${schema.schema_name}`,
+      url: `/project/${route.params.id}/studio/schema/${schema.id}`,
       icon: Database,
     }));
   });

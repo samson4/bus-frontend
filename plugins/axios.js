@@ -8,7 +8,12 @@ export default defineNuxtPlugin(() => {
     axios.interceptors.request.use(
       (config) => {
         // Do something before request is sent
-        if (localStorage.getItem("token")) {
+        if (localStorage.getItem("project_token")) {
+          axios.defaults.headers.common["Authorization"] =
+            `Bearer ${localStorage.getItem("project_token")}`;
+          config.headers["Authorization"] =
+            `Bearer ${localStorage.getItem("project_token")}`;
+        }else if(localStorage.getItem("token")){
           axios.defaults.headers.common["Authorization"] =
             `Bearer ${localStorage.getItem("token")}`;
           config.headers["Authorization"] =
@@ -32,7 +37,7 @@ export default defineNuxtPlugin(() => {
       if (code >= 500 && code <= 550) {
         console.log("Server Error");
       } else {
-        alert("Error");
+        console.log("Error",error);
       }
     },
   );

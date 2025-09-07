@@ -90,7 +90,7 @@
               <li v-for="table in filteredTables" :key="table.id">
                 <!-- <NuxtLink  class="group block"> -->
                 <div
-                  @click="selectTable(table.table_name)"
+                  @click="selectTable(table)"
                   :key="table.id"
                   :class="[
                     'flex items-center justify-between px-3 py-3 rounded-lg transition-all duration-200 cursor-pointer',
@@ -126,7 +126,7 @@
                             : 'text-gray-900',
                         ]"
                       >
-                        {{ table.table_name }}
+                        {{ table }}
                       </p>
                       <p class="text-xs text-gray-500 truncate">
                         {{ getTableType(table.table_name) }}
@@ -717,7 +717,7 @@ const fetchTables = async () => {
     );
 
     tables.value = tablesResult.data.map((table) => ({
-      id: table.table_name,
+      id: table.id,
       url: `/studio/schema/${schema}/table/${table.table_name}`,
       table_name: table.table_name,
       icon: Table,
@@ -732,12 +732,13 @@ const fetchTables = async () => {
   }
 };
 
-const selectTable = async (tableName) => {
+const selectTable = async (table) => {
+  console.log("Selected table:", table);
   isDataLoading.value = true;
   try {
-    selectedTable.value = tableName;
+    selectedTable.value = table.table_name;
     const columnsResponse = await axios.get(
-      `/columns/?table=${tableName}&schema=${route.params.id}`
+      `/columns/?table=${table.id}&schema=${route.params.id}`
     );
 
     columns.value = columnsResponse.map((col) => ({
@@ -745,7 +746,7 @@ const selectTable = async (tableName) => {
       header: col.column_name,
       cell: ({ getValue }) => getValue() || "",
     }));
-    fetchTableData(tableName);
+    // fetchTableData(tableName);
   } catch (error) {
     console.error("Error selecting table:", error);
     isDataLoading.value = false;

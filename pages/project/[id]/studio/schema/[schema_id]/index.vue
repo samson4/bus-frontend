@@ -1,8 +1,8 @@
 <template>
-  <div class="flex border w-full h-screen">
+  <div class="flex border w-full h-screen" >
     <div class="border w-1/4 overflow-auto">
       <!-- Sidebar -->
-      <div class="bg-white border-r border-gray-200 flex flex-col">
+      <div class="bg-white border-r border-gray-200 flex flex-col overflow-auto">
         <!-- Header -->
         <div class="p-6 border-b border-gray-200 sticky">
           <div class="flex items-center space-x-3">
@@ -91,11 +91,11 @@
               <li v-for="table in tables" :key="table.id">
                 <!-- <NuxtLink  class="group block"> -->
                 <div
-                  @click="selectTable(table.table_name)"
+                  @click="selectTable(table)"
                   :key="table.id"
                   :class="[
                     'flex items-center justify-between px-3 py-3 rounded-lg transition-all duration-200 cursor-pointer',
-                    isActiveTable(table.table_name)
+                    isActiveTable(table.id)
                       ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-sm'
                       : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900',
                   ]"
@@ -104,7 +104,7 @@
                     <div
                       :class="[
                         'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
-                        isActiveTable(table.table_name)
+                        isActiveTable(table.id)
                           ? 'bg-blue-100'
                           : 'bg-gray-100 group-hover:bg-gray-200',
                       ]"
@@ -112,7 +112,7 @@
                       <Table
                         :class="[
                           'w-4 h-4',
-                          isActiveTable(table.table_name)
+                          isActiveTable(table.id)
                             ? 'text-blue-600'
                             : 'text-gray-600',
                         ]"
@@ -122,7 +122,7 @@
                       <p
                         :class="[
                           'font-medium truncate',
-                          isActiveTable(table.table_name)
+                          isActiveTable(table.id)
                             ? 'text-blue-900'
                             : 'text-gray-900',
                         ]"
@@ -137,7 +137,7 @@
                   <ChevronRight
                     :class="[
                       'w-4 h-4 transition-transform group-hover:translate-x-1',
-                      isActiveTable(table.table_name)
+                      isActiveTable(table.id)
                         ? 'text-blue-600'
                         : 'text-gray-400',
                     ]"
@@ -199,7 +199,7 @@
         </div>
       </div>
     </div>
-    <div class="border w-3/4 flex flex-col">
+    <div class="border w-3/4 flex flex-col overflow-auto">
       <!-- Main Content Area -->
       <div class="flex-1 flex flex-col">
         <!-- Header -->
@@ -236,7 +236,7 @@
                 <div class="flex items-center justify-between">
                   <div>
                     <h3 class="text-lg font-medium text-gray-900">
-                      {{ selectedTable }}
+                      {{ selectedTable.name }}
                     </h3>
                     <p class="text-sm text-gray-500">
                       {{ tableDataValue.length }} rows
@@ -268,9 +268,9 @@
               <!-- Table -->
               <div
                 v-else-if="!isDataLoading && table && tableDataValue.length > 0"
-                class="overflow-x-auto mt-4"
+                class=" mt-4"
               >
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="min-w-full divide-y divide-gray-200 overflow-x-auto mt-4">
                   <thead class="bg-gray-50">
                     <tr
                       v-for="headerGroup in table.getHeaderGroups()"
@@ -341,7 +341,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <div>
+                <!-- <div> -->
                   <!-- <div class="flex items-center gap-2">
                     <button
                       class="border rounded p-1"
@@ -405,7 +405,7 @@
                   </div> -->
                   <!-- Pagination -->
                   <!-- Pagination -->
-                  <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                  <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 mt-4 position-fixed w-auto bottom-0">
                     <div
                       class="flex flex-col sm:flex-row items-center justify-between gap-4"
                     >
@@ -496,7 +496,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                <!-- </div> -->
               </div>
 
               <!-- Empty State -->
@@ -719,8 +719,8 @@ function handleGoToPage(e) {
 function handlePageSizeChange(e) {
   table.setPageSize(Number(e.target.value));
 }
-const isActiveTable = (tableName) => {
-  return selectedTable.value === tableName;
+const isActiveTable = (table) => {
+  return selectedTable.value && selectedTable.value.id === table;
 };
 
 const getTableType = (tableName) => {
@@ -734,14 +734,14 @@ const getTableType = (tableName) => {
 const fetchTables = async () => {
   try {
     isLoading.value = true;
-    const schema = route.params.schema_id;
+    const schema_id = route.params.schema_id;
     const tablesResult = await axios.get(
-      `tables/?schema=${schema}&search_query=${searchQuery.value}&limit=${tablesLimit.value}&skip=${offset.value}`
+      `tables/?schema_id=${schema_id}&search_query=${searchQuery.value}&limit=${tablesLimit.value}&skip=${offset.value}`
     );
 
     tables.value = tablesResult.data.map((table) => ({
-      id: table.table_name,
-      url: `/studio/schema/${schema}/table/${table.table_name}`,
+      id: table.id,
+      url: `/studio/schema/${schema_id}/table/${table.id}`,
       table_name: table.table_name,
       icon: Table,
     }));
@@ -755,12 +755,12 @@ const fetchTables = async () => {
   }
 };
 
-const selectTable = async (tableName) => {
+const selectTable = async (table) => {
   isDataLoading.value = true;
   try {
-    selectedTable.value = tableName;
+    selectedTable.value = table;
     const columnsResponse = await axios.get(
-      `/columns/?table=${tableName}&schema=${route.params.schema_id}`
+      `/columns/?table_id=${table.id}&schema=${route.params.schema_id}`
     );
 
     columns.value = columnsResponse.map((col) => ({
@@ -768,17 +768,17 @@ const selectTable = async (tableName) => {
       header: col.column_name,
       cell: ({ getValue }) => getValue() || "",
     }));
-    fetchTableData(tableName);
+    fetchTableData(table);
   } catch (error) {
     console.error("Error selecting table:", error);
     isDataLoading.value = false;
   }
 };
 
-const fetchTableData = async (tableName) => {
+const fetchTableData = async (table) => {
   isDataLoading.value = true;
   const dataResponse = await axios.get(
-    `/data/?schema=${route.params.schema_id}&table=${tableName}&limit=${dataLimit.value}&skip=${dataOffset.value}`
+    `/data/?schema=${route.params.schema_id}&table=${table.table_name}&limit=${dataLimit.value}&skip=${dataOffset.value}`
   );
 
   if (dataResponse.data.length === 0) {

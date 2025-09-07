@@ -4,7 +4,7 @@
     <AppNavbar />
   </div>
     <div class="flex w-full">
-      <SideBar :items="sidebarNavigation" />
+      <SideBar style="position: sticky;" :items="sidebarNavigation" />
       <main class="overflow-y-auto w-full h-full"><slot />
         <ModalsContainer />
       </main>

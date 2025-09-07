@@ -218,7 +218,7 @@
                   </span>
                 </div>
                 <button
-                  @click="$router.push(`/project/${project.id}/studio`)"
+                  @click="openProject(project)"
                   class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium"
                 >
                   Open Project
@@ -295,7 +295,7 @@ const searchQuery = ref("");
 const sortBy = ref("name");
 const sortOrder = ref("asc");
 const activeMenu = ref(null);
-
+const router = useRouter()
 // Computed properties
 const filteredProjects = computed(() => {
   let filtered = projects.value;
@@ -387,11 +387,19 @@ const toggleProjectMenu = (projectId) => {
   activeMenu.value = activeMenu.value === projectId ? null : projectId;
 };
 
-const openProject = (project) => {
+const openProject = async (project) => {
   // Navigate to project detail page
   // You can use your router here
   console.log("Opening project:", project.project.project_name);
-  router.push(`/project/${project.project.id}/studio`);
+  const response_token = await axios.get('/project/select/'+ project.project.id);
+ if(response_token.project_token){
+   localStorage.setItem('project_token', response_token.project_token);
+    router.push(`/project/${project.project.id}/studio`);
+  }
+  else{
+   console.error("Error selecting project:", response_token);
+ }
+  
   
 };
 
