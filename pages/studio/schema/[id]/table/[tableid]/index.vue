@@ -372,7 +372,7 @@ const table = computed(() => {
   }
 
   return useVueTable({
-    data: tableDataValue.value,
+    data: JSON.stringify(tableDataValue.value),
     columns: columns.value,
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
@@ -391,7 +391,7 @@ const fetchTableData = async () => {
   columns.value = columnsResponse.map((col) => ({
     accessorKey: col.column_name,
     header: col.column_name,
-    cell: ({ getValue }) => getValue() || "",
+    cell: ({ getValue }) => JSON.stringify(getValue()) || "",
   }));
   console.log("dataResponse");
   const dataResponse = await axios.get(

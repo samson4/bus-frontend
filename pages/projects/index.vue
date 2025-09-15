@@ -393,6 +393,7 @@ const openProject = async (project) => {
   console.log("Opening project:", project.project.project_name);
   const response_token = await axios.get('/project/select/'+ project.project.id);
  if(response_token.project_token){
+  localStorage.removeItem('project_token')
    localStorage.setItem('project_token', response_token.project_token);
     router.push(`/project/${project.project.id}/studio`);
   }
@@ -422,6 +423,7 @@ const handleClickOutside = (event) => {
 };
 
 onMounted(() => {
+  
   fetchProjects();
   document.addEventListener("click", handleClickOutside);
 });

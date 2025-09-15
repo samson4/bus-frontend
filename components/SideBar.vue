@@ -99,24 +99,25 @@
       </nav>
 
       <!-- Footer -->
-      <!-- <div class="absolute bottom-0 left-0 right-0 p-4 border-t bg-white">
+      <div class=" bg-white">
+        <NuxtLink :to="`/project/${route.params.id}/studio/editor/`">
         <div 
-          :class="[
-            'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer',
-            isCollapsed ? 'justify-center' : ''
-          ]"
+          :class="
+            'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
+            
+          "
         >
-          <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            <User class="w-4 h-4 text-gray-600" />
+          <div class="w-8 h-8   flex items-center justify-center">
+            <AppWindow class="w-4 h-4 " />
           </div>
           <div v-if="!isCollapsed" class="flex-1">
-            <p class="font-medium text-gray-900">John Doe</p>
-            <p class="text-xs text-gray-500">john@example.com</p>
+            <span class="font-medium text-gray-900">SQL Editor</span>
           </div>
-          <ChevronDown v-if="!isCollapsed" class="w-4 h-4 text-gray-400" />
+          
         </div>
+      </NuxtLink>
       </div>
-    </div> -->
+    <!-- </div> -->
 
       <!-- Main Content -->
       <!-- <div class="flex-1 flex flex-col"> -->
@@ -168,6 +169,7 @@ import {
   Clock,
   Database,
   Table2,
+  AppWindow
 } from "lucide-vue-next";
 const route = useRoute();
 const isCollapsed = ref(false);

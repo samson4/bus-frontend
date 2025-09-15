@@ -49,9 +49,9 @@
               <!--Only Relational Database is supported-->
               <option value="postgresql">PostgreSQL</option>
               <option value="mysql">MySQL</option>
-              <!-- <option value="sqlite">SQLite</option>
-              <option value="MariaDB">MariaDB</option>
-              <option value="MS SQL Server">MS SQL Server</option>
+              <!-- <option value="sqlite">SQLite</option> -->
+              <option value="mariadb">MariaDB</option>
+              <!-- <option value="MS SQL Server">MS SQL Server</option>
               <option value="Oracle">Oracle</option> -->
             </select>
           </div>
@@ -153,7 +153,7 @@ const dbConnectionUrl = computed(() => {
       return "mysql://user:password@localhost:3306/dbname";
     case "sqlite":
       return "sqlite:///path/to/database.db";
-    case "MariaDB":
+    case "mariadb":
       return "mariadb://user:password@localhost:3306/dbname";
     case "MS SQL Server":
       return "mssql://user:password@localhost:1433;database=dbname";

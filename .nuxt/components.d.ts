@@ -13,6 +13,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = (T & DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }>)
 interface _GlobalComponents {
       'AppSidebar': typeof import("../components/AppSidebar.vue")['default']
+    'CodeMirrorEditor': typeof import("../components/CodeMirrorEditor.vue")['default']
     'IconsAccount': typeof import("../components/Icons/Account.vue")['default']
     'IconsBell': typeof import("../components/Icons/Bell.vue")['default']
     'IconsCalendar': typeof import("../components/Icons/Calendar.vue")['default']
@@ -153,6 +154,7 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyAppSidebar': LazyComponent<typeof import("../components/AppSidebar.vue")['default']>
+    'LazyCodeMirrorEditor': LazyComponent<typeof import("../components/CodeMirrorEditor.vue")['default']>
     'LazyIconsAccount': LazyComponent<typeof import("../components/Icons/Account.vue")['default']>
     'LazyIconsBell': LazyComponent<typeof import("../components/Icons/Bell.vue")['default']>
     'LazyIconsCalendar': LazyComponent<typeof import("../components/Icons/Calendar.vue")['default']>
@@ -299,6 +301,7 @@ declare module 'vue' {
 }
 
 export const AppSidebar: typeof import("../components/AppSidebar.vue")['default']
+export const CodeMirrorEditor: typeof import("../components/CodeMirrorEditor.vue")['default']
 export const IconsAccount: typeof import("../components/Icons/Account.vue")['default']
 export const IconsBell: typeof import("../components/Icons/Bell.vue")['default']
 export const IconsCalendar: typeof import("../components/Icons/Calendar.vue")['default']
@@ -439,6 +442,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyAppSidebar: LazyComponent<typeof import("../components/AppSidebar.vue")['default']>
+export const LazyCodeMirrorEditor: LazyComponent<typeof import("../components/CodeMirrorEditor.vue")['default']>
 export const LazyIconsAccount: LazyComponent<typeof import("../components/Icons/Account.vue")['default']>
 export const LazyIconsBell: LazyComponent<typeof import("../components/Icons/Bell.vue")['default']>
 export const LazyIconsCalendar: LazyComponent<typeof import("../components/Icons/Calendar.vue")['default']>

@@ -370,7 +370,7 @@ const table = computed(() => {
   }
 
   return useVueTable({
-    data: tableDataValue.value,
+    data: JSON.stringify(tableDataValue.value),
     columns: columns.value,
     getCoreRowModel: getCoreRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
