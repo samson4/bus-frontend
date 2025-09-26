@@ -20,6 +20,9 @@
     <div v-if="table">
       <DataTable v-if="columns.length && query_result" :data="query_result" :columns="columns"/>
     </div>
+    <div v-if="message" class="alert alert-info mt-4">
+      {{ message }}
+    </div>  
   </div>
 </template>
 
@@ -40,9 +43,9 @@ const editorRef = ref(null);
 const sqlCode = ref("");
 const columns = ref([]);
 const query_columns = ref(null);
-
 const query_result = ref(null);
 
+const message = ref(null)
 
 const table = computed(() => {
   if (!columns.value || !query_result.value) {
@@ -66,7 +69,9 @@ const handleExecute = async () => {
     });
 
     console.log("Query Result:", response);
-    if (response && response.data.length) {
+    message.value = null
+    table.value = null
+    if (response && response.data && response.data.length) {
       const columnNames = Object.keys(response.data[0]);
    
 
@@ -78,6 +83,8 @@ const handleExecute = async () => {
       // query_result.value = response.data.map((d)=>Object.values(d))
       query_result.value = response.data;
       
+    }else if (response && response.message){
+      message.value = response.message
     }
   } catch (error) {
     console.error("Error executing query:", error);
