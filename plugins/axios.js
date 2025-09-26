@@ -39,11 +39,15 @@ export default defineNuxtPlugin(() => {
       } else {
         const route = useRoute();
         if (code === 401 && route.path !== "/login") {
+          console.log("Authorization Error");
           localStorage.removeItem("token");
           localStorage.removeItem("project_token");
           window.location.href = "/login";
         }
         console.log("Error",error);
+        // localStorage.removeItem("token");
+        //   localStorage.removeItem("project_token");
+        // window.location.href = "/login";
       }
     },
   );
