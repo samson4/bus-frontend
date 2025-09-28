@@ -287,6 +287,10 @@ import {
   Calendar,
   ExternalLink,
 } from "lucide-vue-next";
+definePageMeta({
+  middleware: ['auth'],
+  // or middleware: 'auth'
+})
 
 // Reactive data
 const projects = ref([]);

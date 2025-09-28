@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 import { useRoute } from "nuxt/app";
 
 export default defineNuxtPlugin(() => {
@@ -42,7 +43,7 @@ export default defineNuxtPlugin(() => {
           console.log("Authorization Error");
           localStorage.removeItem("token");
           localStorage.removeItem("project_token");
-          window.location.href = "/login";
+        //  window.location.href = "/login";
         }
         console.log("Error",error);
         // localStorage.removeItem("token");
@@ -50,5 +51,5 @@ export default defineNuxtPlugin(() => {
         // window.location.href = "/login";
       }
     },
-  );
+  )
 });

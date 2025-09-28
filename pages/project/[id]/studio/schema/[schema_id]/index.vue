@@ -609,6 +609,7 @@ import ModalConfirmPlainCss from "./ModalConfirmPlainCss.vue";
 
 definePageMeta({
   layout: "studio",
+  middleware: ["auth"],
 });
 const INITIAL_PAGE_INDEX = 0;
 const tables = ref([]);

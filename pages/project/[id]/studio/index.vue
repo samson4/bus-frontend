@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "studio",
+  middleware: ["auth"],
 });
 import {
   FlexRender,
