@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-between h-screen w-full">
     <div class="h-24 border w-full">
-    <AppNavbar />
+    <!-- <AppNavbar /> -->
   </div>
     <div class="flex w-full">
       <SideBar style="position: sticky;" :items="sidebarNavigation" />

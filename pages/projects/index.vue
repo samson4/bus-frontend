@@ -37,6 +37,13 @@
               <Plus class="w-4 h-4 mr-2" />
               New Project
             </button>
+            <button
+              @click="logout"
+              class="align-end inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+             
+              Sign Out
+            </button>
           </div>
         </div>
       </div>
@@ -287,6 +294,7 @@ import {
   Calendar,
   ExternalLink,
 } from "lucide-vue-next";
+
 definePageMeta({
   middleware: ['auth'],
   // or middleware: 'auth'
@@ -407,7 +415,12 @@ const openProject = async (project) => {
   
   
 };
-
+const logout = () => {
+  // 
+  localStorage.removeItem('project_token');
+  localStorage.removeItem('token');
+  router.push('/login');
+};
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {

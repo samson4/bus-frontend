@@ -10,15 +10,20 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-4 border-b">
         <div v-if="!isCollapsed" class="flex items-center space-x-3">
+          
+       
           <div
             class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"
           >
+           <NuxtLink :to="`/projects`">
             <Home class="w-4 h-4 text-white" />
+            </NuxtLink>
           </div>
           <div>
             <h2 class="font-semibold text-gray-900">Acme Inc</h2>
             <p class="text-xs text-gray-500">Enterprise</p>
           </div>
+
         </div>
         <button
           @click="toggleSidebar"
@@ -99,6 +104,24 @@
       </nav>
 
       <!-- Footer -->
+       <!-- <div class=" bg-white">
+        <NuxtLink :to="`/project/${route.params.id}/studio/diagram/`">
+        <div 
+          :class="
+            'flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer'
+            
+          "
+        >
+          <div class="w-8 h-8   flex items-center justify-center">
+            <Workflow class="w-4 h-4 " />
+          </div>
+          <div v-if="!isCollapsed" class="flex-1">
+            <span class="font-medium text-gray-900">ER Diagram</span>
+          </div>
+          
+        </div>
+      </NuxtLink>
+      </div> -->
       <div class=" bg-white">
         <NuxtLink :to="`/project/${route.params.id}/studio/editor/`">
         <div 
@@ -133,11 +156,11 @@
       </header> -->
 
       <!-- Content -->
-      <!-- <main class="flex-1 p-6 bg-gray-50">
+      <!-- <main class="flex-1 p-6 bg-gray-50 align-end" >
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div class="aspect-video bg-white rounded-xl shadow-sm"></div>
-          <div class="aspect-video bg-white rounded-xl shadow-sm"></div>
-          <div class="aspect-video bg-white rounded-xl shadow-sm"></div>
+          <div class="aspect-video bg-white rounded-xl shadow-sm">L</div>
+          <div class="aspect-video bg-white rounded-xl shadow-sm">M</div>
+          <div class="aspect-video bg-white rounded-xl shadow-sm">O</div>
         </div>
         <div class="bg-white rounded-xl shadow-sm h-96"></div>
       </main> -->
@@ -169,7 +192,8 @@ import {
   Clock,
   Database,
   Table2,
-  AppWindow
+  AppWindow,
+  Workflow
 } from "lucide-vue-next";
 const route = useRoute();
 const isCollapsed = ref(false);
