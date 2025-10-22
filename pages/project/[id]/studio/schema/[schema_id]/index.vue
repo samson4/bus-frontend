@@ -236,13 +236,18 @@
                 <div class="flex items-center justify-between">
                   <div>
                     <h3 class="text-lg font-medium text-gray-900">
-                      {{ selectedTable.name }}
+                      {{ selectedTable.table_name }}
                     </h3>
                     <p class="text-sm text-gray-500">
                       {{ tableDataValue.length }} rows
                     </p>
+                    
+                    
+                 
                   </div>
+                
                   <div class="flex items-center space-x-2">
+                     <p  class=" text-sm  text-gray-500">{{ time_taken }} sec</p>
                     <button
                       class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                     >
@@ -607,6 +612,7 @@ import { definePageMeta, useRoute } from "#imports";
 import { ModalsContainer, useModal } from "vue-final-modal";
 import ModalConfirmPlainCss from "./ModalConfirmPlainCss.vue";
 
+
 definePageMeta({
   layout: "studio",
   middleware: ["auth"],
@@ -614,6 +620,7 @@ definePageMeta({
 const INITIAL_PAGE_INDEX = 0;
 const tables = ref([]);
 const tableDataValue = ref([]);
+const time_taken = ref(0);
 const tableDataHeaders = ref([]);
 const isLoading = ref(true);
 const isDataLoading = ref(false);
@@ -768,12 +775,17 @@ const fetchTableData = async (table) => {
 
   if (dataResponse.data.length === 0) {
     tableDataValue.value = [];
+    totalData.value = dataResponse.total;
+  dataPage.value = dataResponse.page;
+  dataLimit.value = dataResponse.limit;
+  time_taken.value = dataResponse.time_taken;
     isDataLoading.value = false;
     return;
   }
   totalData.value = dataResponse.total;
   dataPage.value = dataResponse.page;
   dataLimit.value = dataResponse.limit;
+  time_taken.value = dataResponse.time_taken;
   tableDataValue.value = dataResponse.data;
   isDataLoading.value = false;
 };
