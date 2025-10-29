@@ -13,7 +13,7 @@
             </div>
             <div>
               <h1 class="text-lg font-semibold text-gray-900">
-                Database Schema
+                Database Schemas
               </h1>
               <p class="text-sm text-gray-500">{{ route.params.schema_id }}</p>
             </div>

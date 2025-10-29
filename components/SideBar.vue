@@ -12,18 +12,8 @@
         <div v-if="!isCollapsed" class="flex items-center space-x-3">
           
        
-          <div
-            class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center"
-          >
-           <NuxtLink :to="`/projects`">
-            <Home class="w-4 h-4 text-white" />
-            </NuxtLink>
-          </div>
-          <div>
-            <h2 class="font-semibold text-gray-900">Acme Inc</h2>
-            <p class="text-xs text-gray-500">Enterprise</p>
-          </div>
-
+          
+          <ProjectInfo v-if="route.params.id" :id="route.params.id"/>
         </div>
         <button
           @click="toggleSidebar"
@@ -171,7 +161,7 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
-
+import ProjectInfo from "./project/ProjectInfo.vue";
 import {
   Home,
   Inbox,
@@ -216,16 +206,12 @@ const isActiveTable = (tableName) => {
   }
 };
 const navigationItems = ref([]);
+const userproject = ref()
 
-const projects = [
-  { name: "Design Engineering", icon: Folder },
-  { name: "Sales & Marketing", icon: Target },
-  { name: "Travel", icon: Calendar },
-];
+//methods
 
-onMounted(async () => {
-  console.log("Fetching schemas for project:", route.params.id);
-  await axios.get(`/schemas/`).then((response) => {
+const schemas =  ()=> {
+   axios.get(`/schemas/`).then((response) => {
     console.log(response.data);
     navigationItems.value = response.data.map((schema) => ({
       id: schema.id,
@@ -234,5 +220,9 @@ onMounted(async () => {
       icon: Database,
     }));
   });
+}
+//hoooks
+onMounted( () => {
+  schemas();
 });
 </script>
