@@ -29,6 +29,7 @@ export default defineNuxtPlugin(() => {
     );
   axios.interceptors.response.use(
     (response) => {
+      console.log("response",response);
       // Do something with response data
       return response.data;
     },
