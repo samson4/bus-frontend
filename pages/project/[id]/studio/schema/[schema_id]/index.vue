@@ -248,12 +248,42 @@
                 
                   <div class="flex items-center space-x-2">
                      <p  class=" text-sm  text-gray-500">{{ time_taken }} sec</p>
-                    <button
-                      class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                    >
-                      <Download class="w-4 h-4 mr-2" />
-                      Export
-                    </button>
+<div class="relative">
+  <button
+    ref="exportButtonRef"
+    @click="toggleExportDropdown"
+    class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+    type="button"
+  >
+    <Download class="w-4 h-4 mr-2" />
+    Export
+    <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+  </button>
+
+  <!-- Dropdown menu -->
+  <div ref="exportDropdownRef" v-show="isExportDropdownOpen" class="absolute right-0 mt-2 z-10 bg-white border border-gray-200 rounded-md shadow-lg w-44">
+      <ul class="p-2 text-sm text-gray-700 font-medium">
+        <li>
+          <button
+            @click="selectExport('csv')"
+            class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded text-left"
+            type="button"
+          >
+            CSV
+          </button>
+        </li>
+        <li>
+          <button
+            @click="selectExport('sql')"
+            class="inline-flex items-center w-full p-2 hover:bg-gray-100 hover:text-gray-900 rounded text-left"
+            type="button"
+          >
+            SQL
+          </button>
+        </li>
+      </ul>
+  </div>
+</div>
                     <button
                       class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                     >
@@ -581,7 +611,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import {
   Database,
   Search,
@@ -641,6 +671,26 @@ const dataLimit = ref(100);
 const dataOffset = ref(0);
 const offset = ref(0);
 const goToPageNumber = ref(INITIAL_PAGE_INDEX + 1);
+
+const isExportDropdownOpen = ref(false);
+const exportButtonRef = ref(null);
+const exportDropdownRef = ref(null);
+
+// new: track selected export format
+const exportSelected = ref(null);
+
+// new: handle selection of export format
+const selectExport = async (format) => {
+  exportSelected.value = format; // this is the selected value you asked for
+  isExportDropdownOpen.value = false;
+
+  // Example actions you may want to perform after selection:
+  // 1) Log it
+  console.log("Selected export format:", format);
+
+  const exportResult = await axios.get(`export/data/?table=${selectedTable.value.table_name}&schema=${route.params.schema_id}&option=${format}`)
+  console.log("Export result:", exportResult);
+};
 
 const table = computed(() => {
   if (!columns.value.length || !tableDataValue.value.length) {
@@ -795,6 +845,11 @@ const refreshTables = () => {
 };
 
 onMounted(() => {
-  fetchTables();
+ fetchTables();
 });
+
+
+const toggleExportDropdown = () => {
+  isExportDropdownOpen.value = !isExportDropdownOpen.value;
+};
 </script>
