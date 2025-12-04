@@ -1,7 +1,3 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
 ## Setup
 
 Make sure to install the dependencies:
@@ -54,6 +50,7 @@ To create a new project:
 
 Once the project is created, click on the **Open Project** button to be redirected to the Studio. In the Studio, you can explore your database schemas, tables, and data.
 
+
 ## Production
 
 Build the application for production:
@@ -82,4 +79,8 @@ pnpm run preview
 yarn preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Demo Video
+
+Watch the demo video to see the application in action:
+
+[db explore demo.webm](https://github.com/user-attachments/assets/2773629c-aed9-4925-86b3-962d1b1604a9)
