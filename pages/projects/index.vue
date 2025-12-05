@@ -384,7 +384,7 @@ const filteredProjects = computed(() => {
 const fetchProjects = async () => {
   try {
     isLoading.value = true;
-    const response = await axios.get("/projects");
+    const response = await axios.get("/projects/");
     projects.value = response;
   } catch (error) {
     console.error("Error fetching projects:", error);
