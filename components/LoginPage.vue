@@ -166,13 +166,8 @@ const showModal = ref(false);
 const router = useRouter();
 const handleLogin = async () => {
   isLoading.value = true;
-
-  // Simulate API call
-  // setTimeout(() => {
-  //   isLoading.value = false;
-  //   alert(`Login attempted with: ${email.value}`);
-  // In a real app, you would handle authentication here
-  // }, 1500);
+    localStorage.removeItem("token");
+    localStorage.removeItem("project_token");
   const formData = new FormData();
   formData.append("username", email.value);
   formData.append("password", password.value);
